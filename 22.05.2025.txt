@@ -1,0 +1,101 @@
+USE vit;
+
+SELECT * FROM worker1;
+SELECT * FROM worker;
+
+SELECT COUNT(department)
+FROM worker1
+GROUP BY department
+ORDER BY COUNT(department) DESC
+LIMIT 1;
+
+SELECT department, SUM(salary) AS sume
+FROM worker1
+GROUP BY department
+ORDER BY sume
+LIMIT 1;
+
+SELECT department, SUM(salary)
+FROM worker1
+GROUP BY department;
+
+SELECT department, COUNT(department)
+FROM worker1
+GROUP BY department
+HAVING COUNT(department) > 3;
+
+SELECT department, SUM(salary) AS sume
+FROM worker1
+GROUP BY department
+ORDER BY sume DESC
+LIMIT 1;
+
+SELECT department, SUM(salary)
+FROM worker1
+GROUP BY department
+ORDER BY SUM(salary) DESC
+LIMIT 1 OFFSET 1;
+
+SELECT first_name, department
+FROM worker1
+WHERE salary = (SELECT MAX(salary) FROM worker1);
+
+SELECT first_name, department, salary
+FROM worker1
+WHERE salary > (SELECT AVG(salary) FROM worker1);
+
+CREATE TABLE student (
+    s_id INT,
+    s_name VARCHAR(25)
+);
+
+INSERT INTO student VALUES
+(101, 'Ayaan'),
+(102, 'Meera'),
+(103, 'Ishaan'),
+(105, 'Tanya'),
+(106, 'Vihaan');
+
+CREATE TABLE address (
+    s_id INT,
+    s_address VARCHAR(25)
+);
+
+INSERT INTO address VALUES 
+(101, 'Coimbatore'),
+(104, 'Chennai'),
+(105, 'Pune');
+
+SELECT * FROM student;
+SELECT * FROM address;
+
+SELECT * FROM student CROSS JOIN address;
+
+SELECT * 
+FROM student 
+INNER JOIN address 
+ON student.s_id = address.s_id;
+
+SELECT * 
+FROM student 
+LEFT OUTER JOIN address 
+ON student.s_id = address.s_id;
+
+SELECT * 
+FROM student 
+RIGHT OUTER JOIN address 
+ON student.s_id = address.s_id;
+
+SELECT * FROM student 
+LEFT OUTER JOIN address ON student.s_id = address.s_id
+UNION
+SELECT * FROM student 
+RIGHT OUTER JOIN address ON student.s_id = address.s_id;
+
+SELECT DISTINCT Salary
+FROM Worker1 W1
+WHERE (
+    SELECT COUNT(DISTINCT Salary)
+    FROM Worker1 W2
+    WHERE W2.Salary > W1.Salary
+) = 4;
